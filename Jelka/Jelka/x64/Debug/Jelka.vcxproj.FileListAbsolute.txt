@@ -1,1 +1,2 @@
 C:\Grafika projekat\Jelka\x64\Debug\glew32.dll
+C:\Grafika projekat\Jelka\Jelka\x64\Debug\Jelka.vcxproj.Up2Date

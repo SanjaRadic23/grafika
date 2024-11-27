@@ -136,16 +136,34 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="background.cpp" />
+    <ClCompile Include="clock.cpp" />
+    <ClCompile Include="fireplace.cpp" />
     <ClCompile Include="helpers.cpp" />
+    <ClCompile Include="textrenderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="shelf.cpp" />
+    <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Users\anasa\Downloads\stb_image.h" />
     <ClInclude Include="background.h" />
+    <ClInclude Include="clock.h" />
+    <ClInclude Include="fireplace.h" />
     <ClInclude Include="helpers.h" />
+    <ClInclude Include="textrenderer.h" />
+    <ClInclude Include="shelf.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Users\anasa\OneDrive\Radna površina\room.jpg" />
+    <Image Include="clock.png" />
+    <Image Include="fireplace.png" />
+    <Image Include="shelf.png" />
+    <Image Include="tree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="calibri.ttf" />
+    <Font Include="CENTURY.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
