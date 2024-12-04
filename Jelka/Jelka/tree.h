@@ -4,11 +4,10 @@
 
 class Tree {
 public:
-    Tree(); // Constructor with the texture path
+    Tree(); 
     ~Tree();
-    void render(); // Render the background
+    void render();
 
 private:
-    unsigned int VAO, VBO, textureID, shaderProgram; // OpenGL objects
-    void loadTexture(const std::string& texturePath); // Load texture from file
+    unsigned int VAO, VBO, textureID, shaderProgram;
 };

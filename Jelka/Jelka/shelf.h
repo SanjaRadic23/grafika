@@ -4,11 +4,10 @@
 
 class Shelf {
 public:
-    Shelf(); // Constructor with the texture path
+    Shelf();
     ~Shelf();
-    void render(); // Render the background
+    void render(); 
 
 private:
-    unsigned int VAO, VBO, textureID, shaderProgram; // OpenGL objects
-    void loadTexture(const std::string& texturePath); // Load texture from file
+    unsigned int VAO, VBO, textureID, shaderProgram;
 };

@@ -54,6 +54,7 @@ void Lamps::render(float time, int mode, float lampRadius) {
     glUniform1f(radiusLoc, lampRadius);
 
     glBindVertexArray(VAO);
+    //od prve tacke, svih 9 iscrtaj
     glDrawArrays(GL_POINTS, 0, 9);
 
     glBindVertexArray(0);

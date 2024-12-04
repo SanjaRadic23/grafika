@@ -1,21 +1,18 @@
 ﻿#include "TextRenderer.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "helpers.h" // Pomoćne funkcije za učitavanje šejdera
+#include "helpers.h"
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
-unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
-
 TextRenderer::TextRenderer(const std::string& fontPath, GLuint screenWidth, GLuint screenHeight)
     : screenWidth(screenWidth), screenHeight(screenHeight) {
-    initRenderData();
-    loadFont(fontPath);
+    initRenderData(); //postavljanje bafera i sejdera
+    loadFont(fontPath); //ucitavanje prosledjenog fonta
 }
-
+//destruktor
 TextRenderer::~TextRenderer() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
@@ -29,34 +26,46 @@ void TextRenderer::initRenderData() {
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //radimo sa karakterima i dovoljno je 6 verteksa da bi mogao svaki karakter da se nacrta, svako 4 parametra
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    //ortogonalna projekcija, tekst prikazujemo kao 2d pa nam znear i zfar nisu potrebni
+    //gleda se samo visina i sirina ekrana
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenWidth), 0.0f, static_cast<float>(screenHeight));
+    //rezultat ovoga je postavljanje 0,0 u donji levi ugao i ide se do sirine i visine
     glUseProgram(shaderProgram);
+    //Prosledjujemo matricu u sejder
+    //1-uniformna promenljiva, 2-jednu matricu saljemo, 3-matrica nije transponovana, 4-pokazivac na prvi el. matrice
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, &projection[0][0]);
 }
 void TextRenderer::loadFont(const std::string& fontPath) {
     FT_Library ft;
+    //inicijalizacija biblioteke i postavljanje instance na nju
     if (FT_Init_FreeType(&ft)) {
         std::cerr << "ERROR::FREETYPE: Failed to initialize FreeType library" << std::endl;
         return;
     }
 
     FT_Face face;
+    //ucitavanje fonta
+    //0-neki fontovi mogu sadrzati vise razlicith u jednom fajlu, mi uzimamo prvi 
     if (FT_New_Face(ft, fontPath.c_str(), 0, &face)) {
         std::cerr << "ERROR::FREETYPE: Failed to load font" << std::endl;
         FT_Done_FreeType(ft);
         return;
     }
 
+    //velicina fonta, sirina 48, visina 0 jer ce se prilagoditi sirini
     FT_Set_Pixel_Sizes(face, 0, 48);
 
+    //1 omogucava ucitavanje tekstura bilo koje sirine
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
 
+    //ascii
     for (unsigned char c = 0; c < 128; c++) {
         if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
             std::cerr << "ERROR::FREETYPE: Failed to load character " << c << std::endl;
@@ -67,9 +76,9 @@ void TextRenderer::loadFont(const std::string& fontPath) {
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //razvlaci teksturu
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //GL_LINEAR glatko skaliranje
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         Character character = {

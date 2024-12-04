@@ -50,29 +50,35 @@ unsigned int compileShader(GLenum type, const char* source) {
 
 
 unsigned int createShader(const char* vsSource, const char* fsSource) {
-    unsigned int program;
-    unsigned int vertexShader;
-    unsigned int fragmentShader;
+    //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource
 
-    program = glCreateProgram();
+    unsigned int program; //Objedinjeni sejder
+    unsigned int vertexShader; //Verteks sejder (za prostorne podatke)
+    unsigned int fragmentShader; //Fragment sejder (za boje, teksture itd)
 
-    vertexShader = compileShader(GL_VERTEX_SHADER, vsSource);
-    fragmentShader = compileShader(GL_FRAGMENT_SHADER, fsSource);
+    program = glCreateProgram(); //Napravi prazan objedinjeni sejder program
 
+    vertexShader = compileShader(GL_VERTEX_SHADER, vsSource); //Napravi i kompajliraj vertex sejder
+    fragmentShader = compileShader(GL_FRAGMENT_SHADER, fsSource); //Napravi i kompajliraj fragment sejder
+
+    //Zakaci verteks i fragment sejdere za objedinjeni program
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragmentShader);
 
-    glLinkProgram(program);
-    glValidateProgram(program);
+    glLinkProgram(program); //Povezi ih u jedan objedinjeni sejder program
+    glValidateProgram(program); //Izvrsi provjeru novopecenog programa
 
     int success;
     char infoLog[512];
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
-    if (success == GL_FALSE) {
-        glGetProgramInfoLog(program, 512, NULL, infoLog);
-        std::cerr << "Objedinjeni šejder ima grešku! Greška: \n" << infoLog << std::endl;
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &success); //Slicno kao za sejdere
+    if (success == GL_FALSE)
+    {
+        glGetShaderInfoLog(program, 512, NULL, infoLog);
+        std::cout << "Objedinjeni sejder ima gresku! Greska: \n";
+        std::cout << infoLog << std::endl;
     }
 
+    //Posto su kodovi sejdera u objedinjenom sejderu, oni pojedinacni programi nam ne trebaju, pa ih brisemo zarad ustede na memoriji
     glDetachShader(program, vertexShader);
     glDeleteShader(vertexShader);
     glDetachShader(program, fragmentShader);
@@ -85,6 +91,7 @@ unsigned int loadImageToTexture(const char* filePath) {
     int TextureWidth;
     int TextureHeight;
     int TextureChannels;
+    //0 znaci da stbi_load sam odredjuje broj kanala na osnovu ulazne slike
     unsigned char* ImageData = stbi_load(filePath, &TextureWidth, &TextureHeight, &TextureChannels, 0);
     if (!ImageData) {
         std::cerr << "Greška: Tekstura nije učitana! Proveri putanju i format fajla." << std::endl;
@@ -94,6 +101,7 @@ unsigned int loadImageToTexture(const char* filePath) {
     if (ImageData != NULL)
     {
         //Slike se osnovno ucitavaju naopako pa se moraju ispraviti da budu uspravne
+        //menjamo redosled piksela doslovno
         stbi__vertical_flip(ImageData, TextureWidth, TextureHeight, TextureChannels);
 
         // Provjerava koji je format boja ucitane slike
@@ -109,6 +117,7 @@ unsigned int loadImageToTexture(const char* filePath) {
         unsigned int Texture;
         glGenTextures(1, &Texture);
         glBindTexture(GL_TEXTURE_2D, Texture);
+        //druga 0 znaci da koristimo samo osnovnu sliku
         glTexImage2D(GL_TEXTURE_2D, 0, InternalFormat, TextureWidth, TextureHeight, 0, InternalFormat, GL_UNSIGNED_BYTE, ImageData);
         glBindTexture(GL_TEXTURE_2D, 0);
         // oslobadjanje memorije zauzete sa stbi_load posto vise nije potrebna

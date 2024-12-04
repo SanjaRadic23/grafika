@@ -4,11 +4,10 @@
 
 class Present3 {
 public:
-    Present3(); // Constructor with the texture path
+    Present3(); 
     ~Present3();
-    void render(); // Render the background
+    void render();
 
 private:
-    unsigned int VAO, VBO, textureID, shaderProgram; // OpenGL objects
-    void loadTexture(const std::string& texturePath); // Load texture from file
+    unsigned int VAO, VBO, textureID, shaderProgram;
 };

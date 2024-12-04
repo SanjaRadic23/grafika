@@ -1,11 +1,11 @@
 ﻿// Autor: Sanja Radić, RA 14/2021
 
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS //ignorise warninge rizicnih funkcija
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <GL/glew.h>   
-#include <GLFW/glfw3.h>
+#include <GL/glew.h> //za OpenGL naredbe
+#include <GLFW/glfw3.h> //za pravljenje i otvaranje prozora
 #include "helpers.h"
 #include "background.h"
 #include "tree.h"
@@ -22,11 +22,10 @@
 #include "present4.h"
 #include "books.h"
 #include <vector>
-#include <ctime>  // Za rad sa vremenom
+#include <ctime> 
 
-// Globalne promenljive koje ćemo koristiti za svetlost (ili bilo koju drugu vrednost)
-float brightness = 1.0f;  // Početna svetlost (vrednost može biti između 0.0 i 1.0)
-bool showText = false; // Flag to toggle text visibility
+float brightness = 1.0f; 
+bool showText = false; 
 bool showTimeText = false;
 int mode = 0;
 void handleInput(GLFWwindow* window);
@@ -35,13 +34,13 @@ bool isMouseOverClock(float mouseX, float mouseY, float clockX, float clockY, fl
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void handleInputNumber1(GLFWwindow* window);
 void handleInputNumber2(GLFWwindow* window);
-// Funkcija za dobavljanje trenutnog vremena u formatu HH:MM:SS
+
+
 std::string getCurrentTime() {
-    // Dobijanje trenutnog vremena
+
     std::time_t now = std::time(0);
     std::tm* localTime = std::localtime(&now);
 
-    // Formatiranje vremena u HH:MM:SS format
     char buffer[80];
     std::strftime(buffer, sizeof(buffer), "%H:%M:%S", localTime);
 
@@ -50,38 +49,46 @@ std::string getCurrentTime() {
 
 int main(void)
 {
-    // Dodajte ovo na početak funkcije main
-    float lastTime = glfwGetTime();  // Prošlo vreme
-    float deltaTime = 0.0f;          // Razlika u vremenu između frejmova
-    float frameTime = 1.0f / 60.0f;  // Trajanje frejma za 60 FPS (oko 16.666 ms)
-    if (!glfwInit())
+    float lastTime = glfwGetTime();  // pocetak rada aplikacije
+    float deltaTime = 0.0f;          // razlika izmedju dva frejma
+    float frameTime = 1.0f / 60.0f;  // oko 16.666667 ms
+
+    // Pokretanje GLFW biblioteke
+    // Nju koristimo za stvaranje okvira prozora
+    if (!glfwInit()) // !0 == 1; glfwInit inicijalizuje GLFW i vrati 1 ako je inicijalizovana uspjesno, a 0 ako nije
     {
         std::cout << "GLFW Biblioteka se nije ucitala! :(\n";
         return 1;
     }
 
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    // OpenGL 3.3 i to je programabilni pipeline, unified shaders
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window;
+    GLFWwindow* window; //Mjesto u memoriji za prozor
     unsigned int wWidth = 1500;
     unsigned int wHeight = 800;
     const char wTitle[] = "[Christmas tree]";
     window = glfwCreateWindow(wWidth, wHeight, wTitle, NULL, NULL);
-    float clockX = wWidth / 2 + 10;        // X pozicija (početak kvadrata)
-    float clockY = wHeight / 2 + 247;       // Y pozicija (početak kvadrata)
-    float clockWidth = 100;   // Širina kvadrata
-    float clockHeight = 50;  // Visina kvadrata
+    // glfwCreateWindow( sirina, visina, naslov, monitor na koji ovaj prozor ide preko citavog ekrana (u tom slucaju umjesto NULL ide glfwGetPrimaryMonitor() ), i prozori sa kojima ce dijeliti resurse )
+    float clockX = wWidth / 2 + 10;
+    float clockY = wHeight / 2 + 247;
+    float clockWidth = 100;
+    float clockHeight = 50;
     if (window == NULL)
     {
         std::cout << "Prozor nije napravljen! :(\n";
         glfwTerminate();
         return 2;
     }
+    //prozor je aktivan
     glfwMakeContextCurrent(window);
+    //dozvoljava setovanje velicine pointa u vertex shaderu
     glEnable(GL_PROGRAM_POINT_SIZE);
-    if (glewInit() != GLEW_OK)
+
+    if (glewInit() != GLEW_OK)  //Slicno kao glfwInit. GLEW_OK je predefinisani izlazni kod za uspjesnu inicijalizaciju sadrzan unutar biblioteke
     {
         std::cout << "GLEW nije mogao da se ucita! :'(\n";
         return 3;
@@ -102,7 +109,7 @@ int main(void)
     Books books;
     TextRenderer textrenderer("CENTURY.TTF", 1500, 800);
 
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window)) //kad ubijemo prozor zavrsava se beskonacna petlja
     {
         float currentTime = glfwGetTime();
         deltaTime = currentTime - lastTime;
@@ -112,10 +119,12 @@ int main(void)
             handleInputClock(window, clockX, clockY, clockWidth, clockHeight);
             handleInputNumber1(window);
             handleInputNumber2(window);
+
             if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             {
                 glfwSetWindowShouldClose(window, GL_TRUE);
             }
+            //ciscenje pozadine (boji u sivo)
             glClearColor(0.5, 0.5, 0.5, 1.0);
             glClear(GL_COLOR_BUFFER_BIT);
 
@@ -128,13 +137,14 @@ int main(void)
             present3.render();
             present4.render();
             books.render();
+
             float currentTime = glfwGetTime();
-            // Pozicija vatre (prilagodite prema potrebi)
-            float fireX = -0.5f;  // X koordinata
-            float fireY = -0.25f; // Y koordinata
-            // Renderovanje vatre
+            float fireX = -0.5f; 
+            float fireY = -0.25f; 
             fire.render(currentTime, fireX, fireY);
+
             firelight.render(currentTime);
+
             if(mode == 1)
                 lamps.render(currentTime, 1, 1.0);
             else if(mode == 2)
@@ -144,8 +154,9 @@ int main(void)
 
             if (showTimeText) {
                 glfwSetScrollCallback(window, scroll_callback);
-                // Render current time
+
                 std::string currentTimeStr = getCurrentTime();
+                //glm za rad sa matematikom u grafici, vektor sa tri parametra
                 glm::vec3 textColor = glm::vec3(brightness, brightness, brightness);
 
                 textrenderer.renderText(currentTimeStr, wWidth / 2 + 13, wHeight / 2 + 257, 0.46f, textColor);
@@ -161,14 +172,11 @@ int main(void)
                     "Mouse Scroll Wheel: Adjust the brightness of the clock display."
                 };
 
-                // Set starting position for text rendering
-                float startX = wWidth / 2 - 500;  // Center text horizontally
-                float startY = wHeight / 2 - 250; // Start Y position
+                float startX = wWidth / 2 - 500; 
+                float startY = wHeight / 2 - 250; 
 
-                // Set line height (spacing between lines)
                 float lineHeight = 30.0f;
-
-                // Render each line of text
+                //startY - i * lineHeight svaka sledeca linija ide ispod za 30 i mnozi se sa i jer ako je 3. linija ici ce 3*30 dole
                 for (int i = 0; i < lines.size(); ++i) {
                     textrenderer.renderText(lines[i], startX, startY - i * lineHeight, 0.7f, glm::vec3(1.0f, 0.5f, 0.5f));
                 }
@@ -180,11 +188,14 @@ int main(void)
         else {
             //std::cout << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" << std::endl;
         }
-
+        //Zamjena vidljivog bafera sa pozadinskim
+        //sve se pise u pozadinskom baferu i kad se zavrsi se prikaze
         glfwSwapBuffers(window);
+        //Hvatanje dogadjaja koji se ticu okvira prozora (promjena velicine, pomjeranje itd)
+        //red cekanja za dogadjaje
         glfwPollEvents();
     }
-
+    //Sve OK - batali program
     glfwTerminate();
     return 0;
 }
@@ -194,7 +205,7 @@ void handleInput(GLFWwindow* window) {
 
     if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
         if (!keyPressed) {
-            showText = !showText; // Toggle text display
+            showText = !showText;
             keyPressed = true;
         }
     }
@@ -207,13 +218,13 @@ void handleInputClock(GLFWwindow* window, float clockX, float clockY, float cloc
     static bool keyPressed = false;
     double mouseX, mouseY;
 
-    glfwGetCursorPos(window, &mouseX, &mouseY); // Dobavi poziciju miša
-    mouseY = 800 - mouseY; // Obrni Y koordinatu, jer GLFW koristi drugačiji sistem
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+    mouseY = 800 - mouseY; //da bi se usladilo da donji levi ugao bude 0,0
 
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         if (!keyPressed) {
             if (isMouseOverClock(mouseX, mouseY, clockX, clockY, clockWidth, clockHeight)) {
-                showTimeText = !showTimeText; // Toggle prikaz vremena
+                showTimeText = !showTimeText;
                 keyPressed = true;
             }
         }
@@ -231,30 +242,30 @@ bool isMouseOverClock(float mouseX, float mouseY, float clockX, float clockY, fl
 
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    std::cout << "Scroll detected: " << yoffset << std::endl;  // Ispis u konzoli
+    std::cout << "Scroll detected: " << yoffset << std::endl;
 
     double mouseX, mouseY;
-    glfwGetCursorPos(window, &mouseX, &mouseY);  // Dobavljanje pozicije miša
+    glfwGetCursorPos(window, &mouseX, &mouseY);
 
-    mouseY = 800 - mouseY; // Obrni Y koordinatu, jer GLFW koristi drugačiji sistem (y = 0 na dnu)
+    mouseY = 800 - mouseY;
 
-    float clockX = 1500 / 2 + 10;        // X pozicija (početak kvadrata)
-    float clockY = 800 / 2 + 247;       // Y pozicija (početak kvadrata)
-    float clockWidth = 100;   // Širina kvadrata
-    float clockHeight = 50;  // Visina kvadrata
+    float clockX = 1500 / 2 + 10; 
+    float clockY = 800 / 2 + 247;
+    float clockWidth = 100;
+    float clockHeight = 50;
 
-    // Proveravamo da li je miš unutar okvira sata
+    
     if (mouseX >= clockX && mouseX <= clockX + clockWidth &&
         mouseY >= clockY && mouseY <= clockY + clockHeight) {
-        // Ako jeste, menjamo svetlost u zavisnosti od pomeranja skrola
+       
         if (yoffset > 0) {
-            brightness += 0.05f;  // Povećavamo svetlost
+            brightness += 0.05f;  
         }
         else if (yoffset < 0) {
-            brightness -= 0.05f;  // Smanjujemo svetlost
+            brightness -= 0.05f;
         }
 
-        // Ograničavamo svetlost da bude između 0.0 i 1.0
+        
         if (brightness > 1.0f) {
             brightness = 1.0f;
         }
@@ -262,7 +273,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
             brightness = 0.15f;
         }
 
-        std::cout << "Brightness: " << brightness << std::endl;  // Ispis trenutne svetlosti
+        std::cout << "Brightness: " << brightness << std::endl;  
     }
 }
 
@@ -272,10 +283,10 @@ void handleInputNumber1(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
         if (!keyPressed) {
             if (mode == 1) {
-                mode = 0; // Isključivanje lampica (vraćanje na početno stanje)
+                mode = 0; 
             }
             else {
-                mode = 1; // Uključivanje lampica
+                mode = 1; 
             }
             keyPressed = true;
         }
@@ -291,10 +302,10 @@ void handleInputNumber2(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
         if (!keyPressed) {
             if (mode == 2) {
-                mode = 0; // Isključivanje lampica (vraćanje na početno stanje)
+                mode = 0; 
             }
             else {
-                mode = 2; // Uključivanje lampica
+                mode = 2; 
             }
             keyPressed = true;
         }

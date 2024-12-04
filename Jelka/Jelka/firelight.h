@@ -4,9 +4,9 @@
 
 class FireLight {
 public:
-    FireLight(); // Constructor with the texture path
+    FireLight(); 
     ~FireLight();
-    void render(float currentTime); // Render the background
+    void render(float currentTime); 
 
 private:
     unsigned int VAO, VBO, shaderProgram;

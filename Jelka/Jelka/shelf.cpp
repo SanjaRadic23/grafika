@@ -2,17 +2,14 @@
 #include "helpers.h"
 #include <iostream>
 
-unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
-unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
-
-// Constructor
 Shelf::Shelf() :textureID(0) {
     float vertices[] = {
         // Positions        // Texture Coordinates
-         -0.1,  0.6,    0.0, 1.0, // Top-left
-         -0.1,  0.5,    0.0, 0.0, // Bottom-left
-         0.4,  0.5,    1.0, 0.0, // Bottom-right
-         0.4,  0.6,    1.0, 1.0  // Top-right
+                        //hor, ver
+         -0.1,  0.6,    0.0, 1.0, // gore-levo
+         -0.1,  0.5,    0.0, 0.0, // dole-levo
+         0.4,  0.5,    1.0, 0.0, // dole-desno
+         0.4,  0.6,    1.0, 1.0  // gore-desno
     };
 
     shaderProgram = createShader("shelf.vert", "shelf.frag");
@@ -46,14 +43,13 @@ Shelf::Shelf() :textureID(0) {
     glUseProgram(0);
 }
 
-// Destructor
 Shelf::~Shelf() {
     glDeleteTextures(1, &textureID);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
 }
-// Render the background
+
 void Shelf::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);

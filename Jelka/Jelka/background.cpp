@@ -2,9 +2,6 @@
 #include "helpers.h"
 #include <iostream>
 
-unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
-unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
-
 Background::Background():textureID(0) {
     float vertices[] = {
         // Positions        // Texture Coordinates

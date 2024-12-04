@@ -4,11 +4,10 @@
 
 class Fire {
 public:
-    Fire(); // Constructor with the texture path
+    Fire(); 
     ~Fire();
-    void render(float time, float fireX, float fireY); // Render the background
+    void render(float time, float fireX, float fireY);
 
 private:
-    unsigned int VAO, VBO, textureID1, textureID2, textureID3, shaderProgram; // OpenGL objects
-    void loadTexture(const std::string& texturePath); // Load texture from file
+    unsigned int VAO, VBO, textureID1, textureID2, textureID3, shaderProgram; // smenjuju se teksture tokom vremena (ima ih 3)
 };

@@ -2,7 +2,7 @@
 #include "helpers.h"
 #include <iostream>
 
-// Constructor
+
 Fireplace::Fireplace() :textureID(0) {
     float vertices[] = {
         // Positions        // Texture Coordinates
@@ -44,14 +44,13 @@ Fireplace::Fireplace() :textureID(0) {
     glUseProgram(0);
 }
 
-// Destructor
 Fireplace::~Fireplace() {
     glDeleteTextures(1, &textureID);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
 }
-// Render the background
+
 void Fireplace::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);

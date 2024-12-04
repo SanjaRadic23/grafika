@@ -2,10 +2,6 @@
 #include "helpers.h"
 #include <iostream>
 
-unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
-unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
-
-// Constructor
 Clock::Clock() :textureID(0) {
     float vertices[] = {
         // Positions        // Texture Coordinates
@@ -47,14 +43,13 @@ Clock::Clock() :textureID(0) {
     glUseProgram(0);
 }
 
-// Destructor
 Clock::~Clock() {
     glDeleteTextures(1, &textureID);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
 }
-// Render the background
+
 void Clock::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);

@@ -2,8 +2,6 @@
 #include "helpers.h"
 #include <iostream>
 
-// Constructor
-// Constructor
 Tree::Tree() : textureID(0) {
     float vertices[] = {
         // Pozicije         // Teksturne koordinate
@@ -45,8 +43,6 @@ Tree::Tree() : textureID(0) {
     glUseProgram(0);
 }
 
-
-// Destructor
 Tree::~Tree() {
     glDeleteTextures(1, &textureID);
     glDeleteBuffers(1, &VBO);
@@ -54,13 +50,15 @@ Tree::~Tree() {
     glDeleteProgram(shaderProgram);
 }
 
-// Render the tree
 void Tree::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);

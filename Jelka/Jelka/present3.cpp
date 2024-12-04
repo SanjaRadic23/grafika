@@ -2,38 +2,13 @@
 #include "helpers.h"
 #include <iostream>
 
-// Constructor
 Present3::Present3() :textureID(0) {
-    float vertices1[] = {
-        // Positions        // Texture Coordinates
-         0.5,  -0.4,    0.0, 1.0, // Top-left
-         0.5,  -0.7,    0.0, 0.0, // Bottom-left
-         0.6, -0.7,    1.0, 0.0, // Bottom-right
-         0.6,  -0.4,    1.0, 1.0  // Top-right
-    };
-
-    float vertices2[] = {
-        // Positions        // Texture Coordinates
-         0.65,  -0.4,    0.0, 1.0, // Top-left
-         0.65,  -0.7,    0.0, 0.0, // Bottom-left
-         0.75, -0.7,    1.0, 0.0, // Bottom-right
-         0.75,  -0.4,    1.0, 1.0  // Top-right
-    };
-
     float vertices3[] = {
         // Positions        // Texture Coordinates
          0.78,  -0.3,    0.0, 1.0, // Top-left
          0.78,  -0.6,    0.0, 0.0, // Bottom-left
          0.88, -0.6,    1.0, 0.0, // Bottom-right
          0.88,  -0.3,    1.0, 1.0  // Top-right
-    };
-
-    float vertices4[] = {
-        // Positions        // Texture Coordinates
-         0.55,  -0.4,    0.0, 1.0, // Top-left
-         0.55,  -0.7,    0.0, 0.0, // Bottom-left
-         0.45, -0.7,    1.0, 0.0, // Bottom-right
-         0.,  -0.4,    1.0, 1.0  // Top-right
     };
 
 
@@ -68,14 +43,13 @@ Present3::Present3() :textureID(0) {
     glUseProgram(0);
 }
 
-// Destructor
 Present3::~Present3() {
     glDeleteTextures(1, &textureID);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
 }
-// Render the background
+
 void Present3::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
