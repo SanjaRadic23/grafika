@@ -6,9 +6,8 @@ class FireLight {
 public:
     FireLight(); // Constructor with the texture path
     ~FireLight();
-    void render(); // Render the background
+    void render(float currentTime); // Render the background
 
 private:
-    unsigned int VAO, VBO, textureID, shaderProgram; // OpenGL objects
-    void loadTexture(const std::string& texturePath); // Load texture from file
+    unsigned int VAO, VBO, shaderProgram;
 };

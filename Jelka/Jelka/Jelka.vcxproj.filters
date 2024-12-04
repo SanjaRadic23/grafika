@@ -73,6 +73,12 @@
     <None Include="firelight.frag">
       <Filter>Source Files\Shader Files</Filter>
     </None>
+    <None Include="lamps.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="lamps.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +111,9 @@
     <ClCompile Include="firelight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lamps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h">
@@ -135,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fire.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lamps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

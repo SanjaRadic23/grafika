@@ -15,6 +15,7 @@
 #include "textrenderer.h"
 #include "fire.h"
 #include "firelight.h"
+#include "lamps.h"
 #include <vector>
 #include <ctime>  // Za rad sa vremenom
 
@@ -22,10 +23,13 @@
 float brightness = 1.0f;  // Početna svetlost (vrednost može biti između 0.0 i 1.0)
 bool showText = false; // Flag to toggle text visibility
 bool showTimeText = false;
+int mode = 0;
 void handleInput(GLFWwindow* window);
 void handleInputClock(GLFWwindow* window, float clockX, float clockY, float clockWidth, float clockHeight);
 bool isMouseOverClock(float mouseX, float mouseY, float clockX, float clockY, float clockWidth, float clockHeight);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void handleInputNumber1(GLFWwindow* window);
+void handleInputNumber2(GLFWwindow* window);
 // Funkcija za dobavljanje trenutnog vremena u formatu HH:MM:SS
 std::string getCurrentTime() {
     // Dobijanje trenutnog vremena
@@ -41,7 +45,10 @@ std::string getCurrentTime() {
 
 int main(void)
 {
-    
+    // Dodajte ovo na početak funkcije main
+    float lastTime = glfwGetTime();  // Prošlo vreme
+    float deltaTime = 0.0f;          // Razlika u vremenu između frejmova
+    float frameTime = 1.0f / 60.0f;  // Trajanje frejma za 60 FPS (oko 16.666 ms)
     if (!glfwInit())
     {
         std::cout << "GLFW Biblioteka se nije ucitala! :(\n";
@@ -68,7 +75,7 @@ int main(void)
         return 2;
     }
     glfwMakeContextCurrent(window);
-
+    glEnable(GL_PROGRAM_POINT_SIZE);
     if (glewInit() != GLEW_OK)
     {
         std::cout << "GLEW nije mogao da se ucita! :'(\n";
@@ -82,62 +89,82 @@ int main(void)
     Clock clock;
     Fire fire;
     FireLight firelight;
+    Lamps lamps;
     TextRenderer textrenderer("CENTURY.TTF", 1500, 800);
 
     while (!glfwWindowShouldClose(window))
     {
-        handleInput(window);
-        handleInputClock(window, clockX, clockY, clockWidth, clockHeight);
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        {
-            glfwSetWindowShouldClose(window, GL_TRUE);
-        }
-        glClearColor(0.5, 0.5, 0.5, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        background.render();
-        tree.render();
-        fireplace.render();
-        shelf.render();
-        clock.render();
         float currentTime = glfwGetTime();
-        // Pozicija vatre (prilagodite prema potrebi)
-        float fireX = -0.5f;  // X koordinata
-        float fireY = -0.25f; // Y koordinata
-        // Renderovanje vatre
-        fire.render(currentTime, fireX, fireY);
-        firelight.render();
-
-        if (showTimeText) {
-            glfwSetScrollCallback(window, scroll_callback);
-            // Render current time
-            std::string currentTimeStr = getCurrentTime();
-            glm::vec3 textColor = glm::vec3(brightness, brightness, brightness);
-
-            textrenderer.renderText(currentTimeStr, wWidth / 2 + 13, wHeight / 2 + 257, 0.46f, textColor);
-
-        }
-
-        if (showText) {
-            std::vector<std::string> lines = {
-                "Controls:",
-                "Key 1: Switch to slow blinking mode for tree lights.",
-                "Key 2: Switch to fast blinking mode for tree lights.",
-                "Mouse Click on Clock: Toggle the clock display on / off.",
-                "Mouse Scroll Wheel: Adjust the brightness of the clock display."
-            };
-
-            // Set starting position for text rendering
-            float startX = wWidth / 2 - 500;  // Center text horizontally
-            float startY = wHeight / 2 - 250; // Start Y position
-
-            // Set line height (spacing between lines)
-            float lineHeight = 30.0f;
-
-            // Render each line of text
-            for (int i = 0; i < lines.size(); ++i) {
-                textrenderer.renderText(lines[i], startX, startY - i * lineHeight, 0.7f, glm::vec3(1.0f, 0.5f, 0.5f));
+        deltaTime = currentTime - lastTime;
+        if (deltaTime >= frameTime)
+        {
+            handleInput(window);
+            handleInputClock(window, clockX, clockY, clockWidth, clockHeight);
+            handleInputNumber1(window);
+            handleInputNumber2(window);
+            if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            {
+                glfwSetWindowShouldClose(window, GL_TRUE);
             }
+            glClearColor(0.5, 0.5, 0.5, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            background.render();
+            tree.render();
+            fireplace.render();
+            shelf.render();
+            clock.render();
+            float currentTime = glfwGetTime();
+            // Pozicija vatre (prilagodite prema potrebi)
+            float fireX = -0.5f;  // X koordinata
+            float fireY = -0.25f; // Y koordinata
+            // Renderovanje vatre
+            fire.render(currentTime, fireX, fireY);
+            firelight.render(currentTime);
+            if(mode == 1)
+                lamps.render(currentTime, 1, 1.0);
+            else if(mode == 2)
+                lamps.render(currentTime, 2, 1.0);
+            else
+                lamps.render(currentTime, 0, 1.0);
+
+            if (showTimeText) {
+                glfwSetScrollCallback(window, scroll_callback);
+                // Render current time
+                std::string currentTimeStr = getCurrentTime();
+                glm::vec3 textColor = glm::vec3(brightness, brightness, brightness);
+
+                textrenderer.renderText(currentTimeStr, wWidth / 2 + 13, wHeight / 2 + 257, 0.46f, textColor);
+
+            }
+
+            if (showText) {
+                std::vector<std::string> lines = {
+                    "Controls:",
+                    "Key 1: Switch to first blinking mode for tree lights.",
+                    "Key 2: Switch to second blinking mode for tree lights.",
+                    "Mouse Click on Clock: Toggle the clock display on / off.",
+                    "Mouse Scroll Wheel: Adjust the brightness of the clock display."
+                };
+
+                // Set starting position for text rendering
+                float startX = wWidth / 2 - 500;  // Center text horizontally
+                float startY = wHeight / 2 - 250; // Start Y position
+
+                // Set line height (spacing between lines)
+                float lineHeight = 30.0f;
+
+                // Render each line of text
+                for (int i = 0; i < lines.size(); ++i) {
+                    textrenderer.renderText(lines[i], startX, startY - i * lineHeight, 0.7f, glm::vec3(1.0f, 0.5f, 0.5f));
+                }
+            }
+
+            //std::cout << frameTime << std::endl;
+            lastTime = currentTime;
+        }
+        else {
+            //std::cout << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" << std::endl;
         }
 
         glfwSwapBuffers(window);
@@ -222,6 +249,44 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
         }
 
         std::cout << "Brightness: " << brightness << std::endl;  // Ispis trenutne svetlosti
+    }
+}
+
+void handleInputNumber1(GLFWwindow* window) {
+    static bool keyPressed = false;
+
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        if (!keyPressed) {
+            if (mode == 1) {
+                mode = 0; // Isključivanje lampica (vraćanje na početno stanje)
+            }
+            else {
+                mode = 1; // Uključivanje lampica
+            }
+            keyPressed = true;
+        }
+    }
+    else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE) {
+        keyPressed = false;
+    }
+}
+
+void handleInputNumber2(GLFWwindow* window) {
+    static bool keyPressed = false;
+
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+        if (!keyPressed) {
+            if (mode == 2) {
+                mode = 0; // Isključivanje lampica (vraćanje na početno stanje)
+            }
+            else {
+                mode = 2; // Uključivanje lampica
+            }
+            keyPressed = true;
+        }
+    }
+    else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE) {
+        keyPressed = false;
     }
 }
 

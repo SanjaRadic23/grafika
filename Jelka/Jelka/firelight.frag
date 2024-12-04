@@ -4,6 +4,7 @@ out vec4 outCol;
 uniform vec2 fireCenter; // Pozicija centra vatre (u prostoru šejdera)
 uniform float maxDistance; // Maksimalna udaljenost za potpuni efekat transparentnosti
 uniform float minAlpha;   // Minimalna po?etna transparentnost (na primer, 0.01 za skoro providan centar)
+uniform float time;  
 
 void main()
 {
@@ -18,7 +19,9 @@ void main()
     // Po?etna transparentnost je minAlpha, a smanjuje se prema ivici
     float alpha = clamp(minAlpha + (1.0 - minAlpha) * (1.0 - (distanceFromCenter / maxDistance)), 0.0, 1.0);
     
+    float flicker = 1.0 + 0.1 * sin(time * 3.0);
+
     // Boja i providnost
-    vec3 color = vec3(1.0, 1.0, 1.0); // Možete promeniti boju ako želite
-    outCol = vec4(color, alpha);
+    vec3 color = vec3(1.0, 0.647, 0.0); // Možete promeniti boju ako želite
+    outCol = vec4(color * flicker, alpha);
 }

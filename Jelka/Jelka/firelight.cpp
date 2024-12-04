@@ -51,20 +51,23 @@ FireLight::~FireLight() {
 }
 
 // Render funkcija
-void FireLight::render() {
+void FireLight::render(float currentTime) {
     glUseProgram(shaderProgram);
 
     // Postavljanje uniformnih promenljivih za poziciju centra vatre
-    GLint fireCenterLoc = glGetUniformLocation(shaderProgram, "fireCenter");
-    glUniform2f(fireCenterLoc, -0.495f, -0.24f); // Na primer, centar u UV prostoru (0.5, 0.5)
+    unsigned fireCenterLoc = glGetUniformLocation(shaderProgram, "fireCenter");
+    glUniform2f(fireCenterLoc, -0.5f, -0.25f); // Na primer, centar u UV prostoru (0.5, 0.5)
 
     // Postavljanje uniformne promenljive za maksimalnu udaljenost
-    GLint maxDistanceLoc = glGetUniformLocation(shaderProgram, "maxDistance");
-    glUniform1f(maxDistanceLoc, 0.5f); // Podesite na odgovaraju?u vrednost za maksimalnu udaljenost
+    unsigned maxDistanceLoc = glGetUniformLocation(shaderProgram, "maxDistance");
+    glUniform1f(maxDistanceLoc, 0.25f); // Podesite na odgovaraju?u vrednost za maksimalnu udaljenost
 
     // Postavljanje minimalne transparentnosti (pokušajte sa 0.01 za manju providnost)
-    GLint minAlphaLoc = glGetUniformLocation(shaderProgram, "minAlpha");
-    glUniform1f(minAlphaLoc, 0.3f); // Na primer, centar je gotovo providan
+    unsigned minAlphaLoc = glGetUniformLocation(shaderProgram, "minAlpha");
+    glUniform1f(minAlphaLoc, 0.1f); // Na primer, centar je gotovo providan
+
+    unsigned time = glGetUniformLocation(shaderProgram, "time");
+    glUniform1f(time, currentTime);
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, CRES + 2);

@@ -7,8 +7,8 @@ Fire::Fire() {
     float vertices[] = {
         // Pozicije       // Teksturne koordinate
         -0.67, -0.1,     0.0, 1.0,
-        -0.67, -0.38,     0.0, 0.0,
-        -0.32,  -0.38,     1.0, 0.0,
+        -0.67, -0.36,     0.0, 0.0,
+        -0.32,  -0.36,     1.0, 0.0,
         -0.32,  -0.1,     1.0, 1.0,
     };
 
@@ -37,7 +37,7 @@ Fire::Fire() {
     textureID3 = loadImageToTexture("fire3.png");
 
     // Podešavanje tekstura
-    GLuint textures[3] = { textureID1, textureID2, textureID3 };
+    unsigned textures[3] = { textureID1, textureID2, textureID3 };
     for (int i = 0; i < 3; i++) {
         glBindTexture(GL_TEXTURE_2D, textures[i]);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -51,9 +51,9 @@ Fire::Fire() {
     // Postavljanje uniform lokacija za teksture
     glUseProgram(shaderProgram);
 
-    GLint uTex1Loc = glGetUniformLocation(shaderProgram, "uTex1");
-    GLint uTex2Loc = glGetUniformLocation(shaderProgram, "uTex2");
-    GLint uTex3Loc = glGetUniformLocation(shaderProgram, "uTex3");
+    unsigned uTex1Loc = glGetUniformLocation(shaderProgram, "uTex1");
+    unsigned uTex2Loc = glGetUniformLocation(shaderProgram, "uTex2");
+    unsigned uTex3Loc = glGetUniformLocation(shaderProgram, "uTex3");
 
     glUniform1i(uTex1Loc, 0);  // Tekstura 1 na GL_TEXTURE0
     glUniform1i(uTex2Loc, 1);  // Tekstura 2 na GL_TEXTURE1
@@ -77,13 +77,13 @@ void Fire::render(float time, float fireX, float fireY) {
     glUseProgram(shaderProgram);
 
     // Prosleđivanje uniform promenljivih
-    GLint uTimeLoc = glGetUniformLocation(shaderProgram, "uTime");
+    unsigned uTimeLoc = glGetUniformLocation(shaderProgram, "uTime");
     glUniform1f(uTimeLoc, time);
 
-    GLint firePosLoc = glGetUniformLocation(shaderProgram, "firePos");
+    unsigned firePosLoc = glGetUniformLocation(shaderProgram, "firePos");
     glUniform2f(firePosLoc, fireX, fireY);
 
-    GLint fireRadiusLoc = glGetUniformLocation(shaderProgram, "fireRadius");
+    unsigned fireRadiusLoc = glGetUniformLocation(shaderProgram, "fireRadius");
     glUniform1f(fireRadiusLoc, 0.2);
 
     // Aktiviranje i bind-ovanje tekstura

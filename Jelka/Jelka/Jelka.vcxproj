@@ -140,6 +140,8 @@
     <None Include="firelight.vert" />
     <None Include="fireplace.frag" />
     <None Include="fireplace.vert" />
+    <None Include="lamps.frag" />
+    <None Include="lamps.vert" />
     <None Include="packages.config" />
     <None Include="shelf.frag" />
     <None Include="shelf.vert" />
@@ -155,6 +157,7 @@
     <ClCompile Include="firelight.cpp" />
     <ClCompile Include="fireplace.cpp" />
     <ClCompile Include="helpers.cpp" />
+    <ClCompile Include="lamps.cpp" />
     <ClCompile Include="textrenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shelf.cpp" />
@@ -168,6 +171,7 @@
     <ClInclude Include="firelight.h" />
     <ClInclude Include="fireplace.h" />
     <ClInclude Include="helpers.h" />
+    <ClInclude Include="lamps.h" />
     <ClInclude Include="textrenderer.h" />
     <ClInclude Include="shelf.h" />
     <ClInclude Include="tree.h" />
