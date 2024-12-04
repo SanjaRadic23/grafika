@@ -44,13 +44,13 @@ Lamps::~Lamps() {
 void Lamps::render(float time, int mode, float lampRadius) {
     glUseProgram(shaderProgram);
 
-    GLint timeLoc = glGetUniformLocation(shaderProgram, "time");
+    unsigned int timeLoc = glGetUniformLocation(shaderProgram, "time");
     glUniform1f(timeLoc, time);
 
-    GLint modeLoc = glGetUniformLocation(shaderProgram, "mode");
+    unsigned int modeLoc = glGetUniformLocation(shaderProgram, "mode");
     glUniform1i(modeLoc, mode);
 
-    GLint radiusLoc = glGetUniformLocation(shaderProgram, "lampRadius");
+    unsigned int radiusLoc = glGetUniformLocation(shaderProgram, "lampRadius");
     glUniform1f(radiusLoc, lampRadius);
 
     glBindVertexArray(VAO);

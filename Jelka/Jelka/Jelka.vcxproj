@@ -132,6 +132,8 @@
     <None Include="background.vert" />
     <None Include="basic.frag" />
     <None Include="basic.vert" />
+    <None Include="books.frag" />
+    <None Include="books.vert" />
     <None Include="clock.frag" />
     <None Include="clock.vert" />
     <None Include="fire.frag" />
@@ -143,6 +145,8 @@
     <None Include="lamps.frag" />
     <None Include="lamps.vert" />
     <None Include="packages.config" />
+    <None Include="present.frag" />
+    <None Include="present.vert" />
     <None Include="shelf.frag" />
     <None Include="shelf.vert" />
     <None Include="text.frag" />
@@ -152,32 +156,43 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="background.cpp" />
+    <ClCompile Include="books.cpp" />
     <ClCompile Include="clock.cpp" />
     <ClCompile Include="fire.cpp" />
     <ClCompile Include="firelight.cpp" />
     <ClCompile Include="fireplace.cpp" />
     <ClCompile Include="helpers.cpp" />
     <ClCompile Include="lamps.cpp" />
-    <ClCompile Include="textrenderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="present.cpp" />
+    <ClCompile Include="present2.cpp" />
+    <ClCompile Include="present3.cpp" />
+    <ClCompile Include="present4.cpp" />
+    <ClCompile Include="textrenderer.cpp" />
     <ClCompile Include="shelf.cpp" />
     <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Users\anasa\Downloads\stb_image.h" />
     <ClInclude Include="background.h" />
+    <ClInclude Include="books.h" />
     <ClInclude Include="clock.h" />
     <ClInclude Include="fire.h" />
     <ClInclude Include="firelight.h" />
     <ClInclude Include="fireplace.h" />
     <ClInclude Include="helpers.h" />
     <ClInclude Include="lamps.h" />
+    <ClInclude Include="present.h" />
+    <ClInclude Include="present2.h" />
+    <ClInclude Include="present3.h" />
+    <ClInclude Include="present4.h" />
     <ClInclude Include="textrenderer.h" />
     <ClInclude Include="shelf.h" />
     <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Users\anasa\OneDrive\Radna površina\room.jpg" />
+    <Image Include="books.png" />
     <Image Include="clock.png" />
     <Image Include="fire.png" />
     <Image Include="fire1.png" />
@@ -185,6 +200,10 @@
     <Image Include="fire3.png" />
     <Image Include="fire4.png" />
     <Image Include="fireplace.png" />
+    <Image Include="present1.png" />
+    <Image Include="present2.png" />
+    <Image Include="present3.png" />
+    <Image Include="present4.png" />
     <Image Include="shelf.png" />
     <Image Include="tree.png" />
   </ItemGroup>

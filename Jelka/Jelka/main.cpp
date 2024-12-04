@@ -16,6 +16,11 @@
 #include "fire.h"
 #include "firelight.h"
 #include "lamps.h"
+#include "present.h"
+#include "present2.h"
+#include "present3.h"
+#include "present4.h"
+#include "books.h"
 #include <vector>
 #include <ctime>  // Za rad sa vremenom
 
@@ -90,6 +95,11 @@ int main(void)
     Fire fire;
     FireLight firelight;
     Lamps lamps;
+    Present present;
+    Present2 present2;
+    Present3 present3;
+    Present4 present4;
+    Books books;
     TextRenderer textrenderer("CENTURY.TTF", 1500, 800);
 
     while (!glfwWindowShouldClose(window))
@@ -114,6 +124,10 @@ int main(void)
             fireplace.render();
             shelf.render();
             clock.render();
+            present.render();
+            present3.render();
+            present4.render();
+            books.render();
             float currentTime = glfwGetTime();
             // Pozicija vatre (prilagodite prema potrebi)
             float fireX = -0.5f;  // X koordinata

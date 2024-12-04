@@ -97,7 +97,7 @@ unsigned int loadImageToTexture(const char* filePath) {
         stbi__vertical_flip(ImageData, TextureWidth, TextureHeight, TextureChannels);
 
         // Provjerava koji je format boja ucitane slike
-        GLint InternalFormat = -1;
+        unsigned int InternalFormat = -1;
         switch (TextureChannels) {
         case 1: InternalFormat = GL_RED; break;
         case 2: InternalFormat = GL_RG; break;

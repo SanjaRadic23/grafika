@@ -79,11 +79,20 @@
     <None Include="lamps.frag">
       <Filter>Source Files\Shader Files</Filter>
     </None>
+    <None Include="present.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="present.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="books.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="books.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,6 +121,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lamps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="present.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="present2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="present3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="present4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="books.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,6 +176,21 @@
     <ClInclude Include="lamps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="present.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="present2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="present3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="present4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="books.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Users\anasa\OneDrive\Radna površina\room.jpg">
@@ -179,6 +221,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="fire4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="present1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="present2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="present3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="present4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="books.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
