@@ -31,6 +31,48 @@
     <None Include="background.frag">
       <Filter>Source Files\Shader Files</Filter>
     </None>
+    <None Include="clock.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="clock.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="tree.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="tree.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="fireplace.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="fireplace.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="shelf.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="shelf.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="text.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="text.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="fire.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="fire.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="firelight.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="firelight.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,6 +97,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="textrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fire.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="firelight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,6 +131,12 @@
     <ClInclude Include="textrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="firelight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fire.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Users\anasa\OneDrive\Radna površina\room.jpg">
@@ -98,6 +152,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="clock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fire1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fire2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fire3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fire4.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

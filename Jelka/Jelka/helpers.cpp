@@ -8,57 +8,43 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-unsigned int compileShaderFromFile(GLenum type, const char* source) {
+unsigned int compileShader(GLenum type, const char* source) {
+    //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
+    //Citanje izvornog koda iz fajla
     std::string content = "";
     std::ifstream file(source);
     std::stringstream ss;
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         ss << file.rdbuf();
         file.close();
-        std::cout << "Uspješno pročitao fajl sa putanje \"" << source << "\"!" << std::endl;
+        std::cout << "Uspjesno procitao fajl sa putanje \"" << source << "\"!" << std::endl;
     }
     else {
         ss << "";
-        std::cerr << "Greška pri čitanju fajla sa putanje \"" << source << "\"!" << std::endl;
+        std::cout << "Greska pri citanju fajla sa putanje \"" << source << "\"!" << std::endl;
     }
     std::string temp = ss.str();
-    const char* sourceCode = temp.c_str();
+    const char* sourceCode = temp.c_str(); //Izvorni kod sejdera koji citamo iz fajla na putanji "source"
 
-    int shader = glCreateShader(type);
+    int shader = glCreateShader(type); //Napravimo prazan sejder odredjenog tipa (vertex ili fragment)
 
-    int success;
-    char infoLog[512];
-    glShaderSource(shader, 1, &sourceCode, NULL);
-    glCompileShader(shader);
+    int success; //Da li je kompajliranje bilo uspjesno (1 - da)
+    char infoLog[512]; //Poruka o gresci (Objasnjava sta je puklo unutar sejdera)
+    glShaderSource(shader, 1, &sourceCode, NULL); //Postavi izvorni kod sejdera
+    glCompileShader(shader); //Kompajliraj sejder
 
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (success == GL_FALSE) {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        if (type == GL_VERTEX_SHADER)
-            std::cout << "VERTEX";
-        else if (type == GL_FRAGMENT_SHADER)
-            std::cout << "FRAGMENT";
-        std::cerr << " šejder ima grešku! Greška: \n" << infoLog << std::endl;
-    }
-    return shader;
-}
-
-unsigned int compileShader(GLenum type, const char* source) {
-    unsigned int shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, NULL);
-    glCompileShader(shader);
-
-    int success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success); //Provjeri da li je sejder uspjesno kompajliran
     if (success == GL_FALSE)
     {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cerr << (type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT") << " šejder ima grešku:\n" << infoLog << std::endl;
-        glDeleteShader(shader);
-        return 0;
+        glGetShaderInfoLog(shader, 512, NULL, infoLog); //Pribavi poruku o gresci
+        if (type == GL_VERTEX_SHADER)
+            printf("VERTEX");
+        else if (type == GL_FRAGMENT_SHADER)
+            printf("FRAGMENT");
+        printf(" sejder ima gresku! Greska: \n");
+        printf(infoLog);
     }
-
     return shader;
 }
 

@@ -7,50 +7,23 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Konstruktor
+unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
+unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
+
 TextRenderer::TextRenderer(const std::string& fontPath, GLuint screenWidth, GLuint screenHeight)
     : screenWidth(screenWidth), screenHeight(screenHeight) {
     initRenderData();
     loadFont(fontPath);
 }
 
-// Destruktor
 TextRenderer::~TextRenderer() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteProgram(shaderProgram);
 }
 
-// Inicijalizacija OpenGL objekata
 void TextRenderer::initRenderData() {
-    const char* vertexShaderSource = R"(
-        #version 330 core
-        layout(location = 0) in vec4 vertex; // (x, y, s, t)
-        out vec2 TexCoords;
-
-        uniform mat4 projection;
-
-        void main() {
-            gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-            TexCoords = vertex.zw;
-        }
-    )";
-
-    const char* fragmentShaderSource = R"(
-        #version 330 core
-        in vec2 TexCoords;
-        out vec4 color;
-
-        uniform sampler2D text;
-        uniform vec3 textColor;
-
-        void main() {
-            float sampled = texture(text, TexCoords).r;
-            color = vec4(textColor, sampled);
-        }
-    )";
-
-    shaderProgram = createShader(vertexShaderSource, fragmentShaderSource);
+    shaderProgram = createShader("text.vert", "text.frag");
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -66,8 +39,6 @@ void TextRenderer::initRenderData() {
     glUseProgram(shaderProgram);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, &projection[0][0]);
 }
-
-// Učitavanje fonta
 void TextRenderer::loadFont(const std::string& fontPath) {
     FT_Library ft;
     if (FT_Init_FreeType(&ft)) {
@@ -84,7 +55,7 @@ void TextRenderer::loadFont(const std::string& fontPath) {
 
     FT_Set_Pixel_Sizes(face, 0, 48);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
 
     for (unsigned char c = 0; c < 128; c++) {
         if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
@@ -114,7 +85,6 @@ void TextRenderer::loadFont(const std::string& fontPath) {
     FT_Done_FreeType(ft);
 }
 
-// Renderovanje teksta
 void TextRenderer::renderText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     glUseProgram(shaderProgram);
     glUniform3f(glGetUniformLocation(shaderProgram, "textColor"), color.x, color.y, color.z);

@@ -7,37 +7,16 @@
 Tree::Tree() : textureID(0) {
     float vertices[] = {
         // Pozicije         // Teksturne koordinate
-         0.45f, -0.52f,        0.0f, 0.0f,   // Donja leva
-         1.0f, -0.52f,        1.0f, 0.0f,   // Donja desna
-         0.45f,  0.2f,        0.0f, 0.6f,  // Srednja leva
-         0.97f,  0.2f,        1.0f, 0.6f,  // Srednja desna
-         0.72f, 0.9f,         0.5f, 1.0f    // Srednja gornja
+         0.45, -0.52,        0.0, 0.0,   // Donja leva
+         1.0, -0.52,        1.0, 0.0,   // Donja desna
+         0.45,  0.2,        0.0, 0.6,  // Srednja leva
+         0.97,  0.2,        1.0, 0.6,  // Srednja desna
+         0.72, 0.9,         0.5, 1.0    // Srednja gornja
     };
 
-    // Shader setup
-    const char* vertexShaderSource = R"(
-        #version 330 core 
-        layout(location = 0) in vec2 inPos;
-        layout(location = 1) in vec2 inTex; 
-        out vec2 chTex;
-        void main()
-        {
-            gl_Position = vec4(inPos, 0.0, 1.0);
-            chTex = inTex;
-        }
-    )";
-    const char* fragmentShaderSource = R"(
-        #version 330 core
-        in vec2 chTex;
-        out vec4 outCol;
-        uniform sampler2D uTex;
-        void main()
-        {
-            outCol = texture(uTex, chTex);
-        }
-    )";
-    shaderProgram = createShader(vertexShaderSource, fragmentShaderSource);
+    shaderProgram = createShader("tree.vert", "tree.frag");
     unsigned int stride = (2 + 2) * sizeof(float);
+
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     glGenBuffers(1, &VBO);

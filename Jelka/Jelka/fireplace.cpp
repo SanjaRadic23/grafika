@@ -2,42 +2,21 @@
 #include "helpers.h"
 #include <iostream>
 
+unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
+unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
+
 // Constructor
 Fireplace::Fireplace() :textureID(0) {
     float vertices[] = {
         // Positions        // Texture Coordinates
-        -1.0f,  0.4f,    0.0f, 1.0f, // Top-left
-        -1.0f,  -0.6f,    0.0f, 0.0f, // Bottom-left
-         0.0f, -0.6f,    1.0f, 0.0f, // Bottom-right
-         0.0f,  0.4f,    1.0f, 1.0f  // Top-right
+        -1.0,  0.4,    0.0, 1.0, // Top-left
+        -1.0,  -0.6,    0.0, 0.0, // Bottom-left
+         0.0, -0.6,    1.0, 0.0, // Bottom-right
+         0.0,  0.4,    1.0, 1.0  // Top-right
     };
 
-    // Create the shader for rendering the background
-    const char* vertexShaderSource = R"(
-        #version 330 core 
-        layout(location = 0) in vec2 inPos;
-        layout(location = 1) in vec2 inTex; 
-        out vec2 chTex;
 
-        void main()
-        {
-	        gl_Position = vec4(inPos, 0.0, 1.0);
-	        chTex = inTex;
-        }
-    )";
-
-    const char* fragmentShaderSource = R"(
-        #version 330 core
-        in vec2 chTex;
-        out vec4 outCol;
-        uniform sampler2D uTex;
-        void main()
-        {
-	        outCol = texture(uTex, chTex);
-        }
-    )";
-
-    shaderProgram = createShader(vertexShaderSource, fragmentShaderSource);
+    shaderProgram = createShader("fireplace.vert", "fireplace.frag");
     unsigned int stride = (2 + 2) * sizeof(float);
 
     glGenVertexArrays(1, &VAO);

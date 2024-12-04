@@ -132,11 +132,27 @@
     <None Include="background.vert" />
     <None Include="basic.frag" />
     <None Include="basic.vert" />
+    <None Include="clock.frag" />
+    <None Include="clock.vert" />
+    <None Include="fire.frag" />
+    <None Include="fire.vert" />
+    <None Include="firelight.frag" />
+    <None Include="firelight.vert" />
+    <None Include="fireplace.frag" />
+    <None Include="fireplace.vert" />
     <None Include="packages.config" />
+    <None Include="shelf.frag" />
+    <None Include="shelf.vert" />
+    <None Include="text.frag" />
+    <None Include="text.vert" />
+    <None Include="tree.frag" />
+    <None Include="tree.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="background.cpp" />
     <ClCompile Include="clock.cpp" />
+    <ClCompile Include="fire.cpp" />
+    <ClCompile Include="firelight.cpp" />
     <ClCompile Include="fireplace.cpp" />
     <ClCompile Include="helpers.cpp" />
     <ClCompile Include="textrenderer.cpp" />
@@ -148,6 +164,8 @@
     <ClInclude Include="..\..\..\Users\anasa\Downloads\stb_image.h" />
     <ClInclude Include="background.h" />
     <ClInclude Include="clock.h" />
+    <ClInclude Include="fire.h" />
+    <ClInclude Include="firelight.h" />
     <ClInclude Include="fireplace.h" />
     <ClInclude Include="helpers.h" />
     <ClInclude Include="textrenderer.h" />
@@ -157,6 +175,11 @@
   <ItemGroup>
     <Image Include="..\..\..\Users\anasa\OneDrive\Radna površina\room.jpg" />
     <Image Include="clock.png" />
+    <Image Include="fire.png" />
+    <Image Include="fire1.png" />
+    <Image Include="fire2.png" />
+    <Image Include="fire3.png" />
+    <Image Include="fire4.png" />
     <Image Include="fireplace.png" />
     <Image Include="shelf.png" />
     <Image Include="tree.png" />
