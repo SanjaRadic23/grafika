@@ -75,6 +75,7 @@ void TextRenderer::loadFont(const std::string& fontPath) {
         GLuint texture;
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
+        //glyph karakter, gl_red jer je sve crno belo, nema mipmapa, bitmap.buffer podaci svakog piksela
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //razvlaci teksturu
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -102,13 +103,13 @@ void TextRenderer::renderText(const std::string& text, GLfloat x, GLfloat y, GLf
     for (char c : text) {
         Character ch = Characters[c];
 
-        GLfloat xpos = x + ch.Bearing.x * scale;
+        GLfloat xpos = x + ch.Bearing.x * scale; //donji levi ugao karaktera
         GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
 
-        GLfloat w = ch.Size.x * scale;
+        GLfloat w = ch.Size.x * scale; //sirina i visina karaktera
         GLfloat h = ch.Size.y * scale;
 
-        float vertices[6][4] = {
+        float vertices[6][4] = { //dva trougla koja prave pravougaonik, 6 temena -> 2 trougla
             { xpos,     ypos + h,   0.0f, 0.0f },
             { xpos,     ypos,       0.0f, 1.0f },
             { xpos + w, ypos,       1.0f, 1.0f },
@@ -125,7 +126,7 @@ void TextRenderer::renderText(const std::string& text, GLfloat x, GLfloat y, GLf
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        x += (ch.Advance >> 6) * scale; // Advance is in 1/64 pixels
+        x += (ch.Advance >> 6) * scale; // pravimo razmak izmedju karaktera
     }
 
     glBindVertexArray(0);

@@ -62,9 +62,9 @@ Fire::Fire() {
     unsigned uTex2Loc = glGetUniformLocation(shaderProgram, "uTex2");
     unsigned uTex3Loc = glGetUniformLocation(shaderProgram, "uTex3");
 
-    glUniform1i(uTex1Loc, 0);  // Tekstura 1 na GL_TEXTURE0
-    glUniform1i(uTex2Loc, 1);  // Tekstura 2 na GL_TEXTURE1
-    glUniform1i(uTex3Loc, 2);  // Tekstura 3 na GL_TEXTURE2
+    glUniform1i(uTex1Loc, 0);  // tekstura 1 na GL_TEXTURE0
+    glUniform1i(uTex2Loc, 1);  // tekstura 2 na GL_TEXTURE1
+    glUniform1i(uTex3Loc, 2);  // tekstura 3 na GL_TEXTURE2
 
     glUseProgram(0);
 }

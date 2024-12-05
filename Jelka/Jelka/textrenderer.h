@@ -8,24 +8,23 @@
 // Struktura za karaktere fonta
 struct Character {
     GLuint TextureID;  // ID teksture za karakter
-    glm::ivec2 Size;   // Veličina karaktera
-    glm::ivec2 Bearing; // Offset od baze do gornjeg levog ugla
-    GLuint Advance;    // Offset do sledećeg karaktera
+    glm::ivec2 Size;   // velicina karaktera
+    glm::ivec2 Bearing; // udaljenost od pocetne tacke do gornjeg levog ugla karaktera
+    GLuint Advance;    // razmak do sledeceg karaktera
 };
 
 class TextRenderer {
 public:
     TextRenderer(const std::string& fontPath, GLuint screenWidth, GLuint screenHeight);
     ~TextRenderer();
-
     void renderText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 private:
-    std::map<char, Character> Characters; // Mapa karaktera
-    GLuint VAO, VBO, shaderProgram;       // OpenGL objekti
-    GLuint screenWidth, screenHeight;    // Dimenzije ekrana
+    std::map<char, Character> Characters; 
+    GLuint VAO, VBO, shaderProgram;   
+    GLuint screenWidth, screenHeight;
 
-    void loadFont(const std::string& fontPath); // Učitaj font
-    void initRenderData();                      // Inicijalizuj OpenGL objekte
+    void loadFont(const std::string& fontPath); 
+    void initRenderData();                  
 };
 

@@ -1,42 +1,39 @@
 #version 330 core
+
 out vec4 FragColor;
 
-in vec2 fragCoord;  // Koordinate fragmenta unutar ta?ke
-in vec3 chCol;      // Jedinstvena boja za svaku lampicu
+in vec2 fragCoord;  // koordinate frag
+in vec3 chCol;      // boja tog frag
 
-uniform float time;
+uniform float time; //uniformne prosledjujemo iz .cpp
 uniform int mode;
-uniform float lampRadius; // Radijus osvetljenja lampice
+uniform float lampRadius; // radijus za osvetljenje
 
 void main() {
-    // Koordinate unutar ta?ke (0.0 do 1.0)
-    vec2 pointCoord = gl_PointCoord - vec2(0.5);
+    vec2 pointCoord = gl_PointCoord - vec2(0.5); //centar tacke 0.5 0.5, od fragmenta (kvadrat) oduzmemo
     
-    // Izra?unavanje udaljenosti od centra ta?ke (od 0.0 do 0.5)
-    float dist = length(pointCoord);
+    float dist = length(pointCoord); //uzmem kolika je razdaljina
     
-    // Odbacivanje fragmenata koji su van kružnog oblika
-    if (dist > 0.5) {
+    if (dist > 0.5) { //sve preko 0.5 odbacujem (dobijam krug)
         discard;
     }
 
-    // Intenzitet osvetljenja: najja?i u centru, slabi prema ivici
-    float lightIntensity = 0.5 + 0.5 * (1.0 - dist / lampRadius);
+    float lightIntensity = 0.5 + 0.5 * (1.0 - dist / lampRadius); //udaljavanjem fragmenta od centra svetlost opada
+    //0.5-1.0
 
-    float alpha = 0.5 + 0.5 * (1.0 - dist / 0.5);
+    float alpha = 0.5 + 0.5 * (1.0 - dist / 0.5); //kanal za transparentnost isto 0.5-1.0
     
-    // Koli?ina svetlosti oko lampice
-    vec3 lightEffect = chCol * lightIntensity * alpha; // Kombinacija boje lampice i svetlosti
+    vec3 lightEffect = chCol * lightIntensity * alpha; //boja, osvetljenost, providnost -> kombinuj
+    //alpha ovde samo utice na samu boju, ali mi ne znamo u ovom koraku koliko je fragment providan
     
-    // Ako je mod 1 ili 2, osvetljenje se menja na osnovu treptanja
     if (mode == 1) {
-        float intensity = 0.5 + 0.5 * sin(time * 5.0);  // Stati?ko treptanje
+        float intensity = 0.5 + 0.5 * sin(time * 5.0);  //time je za brzinu
         lightEffect *= intensity;
     } else if (mode == 2) {
-        float randomBlink = step(0.1, fract(sin(time * 500.0)));  // Slu?ajno treptanje
+        float randomBlink = step(0.1, fract(sin(time * 500.0))); //brzo osciluje *500, uzimaj decimalne vrednosti fract
+        //0.1 je prag iznad kog svetlost blinka
         lightEffect *= randomBlink;
     }
     
-    // Kombinacija boje lampice sa svetlosnim efektom
-    FragColor = vec4(lightEffect, alpha);  // Postavljanje rezultuju?e boje sa transparentnoš?u
+    FragColor = vec4(lightEffect, alpha); //kombinuj, prosledjujemo rgb, alpha, tu treba da znamo koliko je providan frag
 }
